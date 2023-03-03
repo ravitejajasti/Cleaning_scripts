@@ -23,4 +23,5 @@ dependencies:
       - setuptools==67.4.0
       - streamlit==1.19.0
       - tornado==6.2
+      - openpyxl
 prefix: /Users/ravitejajasti/opt/anaconda3/envs/clean_domains
