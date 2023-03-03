@@ -1,23 +1,23 @@
-import pandas as pd
-from datetime import date, timedelta
+import streamlit as st
+from domain_clean_streamlit import read_xl
+import zipfile
 
+uploaded_file = st.file_uploader("Choose a file")
 
-in_path = '/Users/ravitejajasti/Downloads/'
-out_path = '/Users/ravitejajasti/OneDrive - Djolt/cleaned_domains/'
-file_name = str(date.today()-timedelta(days=3)) + '-US'
+if uploaded_file is not None:
+    st.download_button('Process CSV', read_xl(uploaded_file), f'{uploaded_file.name}'.split('.')[0]+'.csv', 'text/csv')
+    #st.success('Thanks for downloading!', icon="✅")
 
-exclude = ['admin', 'abuse', 'account', 'adm',  'billing', 'contact', 'customer', 'domain', 'domnames', 'docs', 'dns', 'develop',
-'guide', 'guideus', 'general', 'help', 'helpus', 'host', 'info', 'mail@', 'manager', 'manage@', 'myweb', 'none', 'notification', 'provisioning_customer@',
-'provisioning', 'project@', 'registry', 'siteadmin', 'sysadmin', 'sysmgr', 'support@', 'server', 'sales', 'support', 'server247', 'tech@', 'techsupport', 'techsystem', 'webmaster', 'web']
+st.write("Powered by [dJolt](https://djolt.co/)")
 
-df = pd.read_excel(in_path + file_name + '.xlsx')
-df = df.drop(columns=['domain_registrar_name', 'registrant_address'])
-df.columns = ['COMPANY_WEBSITE', 'DOMAIN_PURCHASE_DATE', 'DOMAIN_EXPIRY_DATE', 'FIRSTNAME', 'COMPANY_NAME',
-'CITY','STATE', 'ZIP', 'COUNTRY', 'EMAIL', 'SMS']
-final_df = df[~df['EMAIL'].str.contains('|'.join(exclude), na=False, case=False)]
+# #draft decorator
+# def out_fn(in_fn):
+#     archive = zipfile.ZipFile('filename.zip', 'r')
+#     xlfile = archive.open('filename.xlsx')
+#     if uploaded_file is not None:
+#         st.download_button('Process CSV', read_xl(uploaded_file), f'{uploaded_file.name}'.split('.')[0]+'.csv', 'text/csv')
 
-final_df.to_csv(out_path + file_name + '.csv')
-
-
-#which python3.9
-#export PYTHONPATH="${PYTHONPATH}:/Users/ravitejajasti/opt/anaconda3/lib/python3.9/site-packages://Users/ravitejajasti/opt/anaconda3/lib/python3.9/site-packages"
+# #draft - zip_file opener and read excel
+# def archive(uploaded_file):
+#     archive = zipfile.ZipFile('filename.zip', 'r')
+#     xlfile = archive.open('filename.xlsx')
